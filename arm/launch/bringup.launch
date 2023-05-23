@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find kortex_driver)/launch/kortex_driver.launch">
+      <arg name="arm" value="gen3_lite" />
+      <arg name="vision" value="false" />
+      <arg name="ip_address" value="10.42.0.15" />
+      <arg name="robot_name" default="gen3lite"/>
+      <arg name="start_rviz" value="false" />
+    </include>
+
+    <group ns="gen3lite">
+      <node name="setup_planning_scene" pkg="arm" type="scene_planner.py" output="screen" respawn="false" />
+      <node name="rviz" pkg="rviz" type="rviz" args="-d $(find arm)/config/happy.rviz" required="true" />
+    </group>
+</launch>
+
