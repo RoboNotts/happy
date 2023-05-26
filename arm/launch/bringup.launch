@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="rviz" default="true"/>
+
     <include file="$(find kortex_driver)/launch/kortex_driver.launch">
       <arg name="arm" value="gen3_lite" />
       <arg name="vision" value="false" />
@@ -10,6 +12,9 @@
 
     <group ns="gen3lite">
       <node name="setup_planning_scene" pkg="arm" type="scene_planner.py" output="screen" respawn="false" />
+    </group>
+
+    <group ns="gen3lite" if="$(arg rviz)">
       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find arm)/config/happy.rviz" required="true" />
     </group>
 </launch>
