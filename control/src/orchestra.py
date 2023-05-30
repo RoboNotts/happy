@@ -2,6 +2,7 @@ import rospy
 from bocelli.srv import Request, Listen, Speak
 from drake.msg import DrakeResults, DrakeResult
 
+# Mozart will interface with ROS
 class Mozart:
 
     def __init__(self):
@@ -13,8 +14,6 @@ class Mozart:
         self.subscribers = {
             "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage)
         }
-
-        self.speak_client("This is an orchestrator test")
 
     ## Updates the Currently visible Person(s)
     def _onPersonImage(self, msg):
@@ -61,6 +60,9 @@ class Mozart:
         rospy.spin()
         
 if __name__ == "__main__":
+    m = Mozart()
+    m.speak_client("This is an orchestrator test")
+    
     print("why")
     
 
