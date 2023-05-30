@@ -9,7 +9,7 @@ import roslibpy.actionlib
 import rospy
 import rospkg
 
-from happynav.srv import MoveTo
+from slam.srv import MoveTo
 
 IP = "10.42.0.1"
 PORT = 9091
