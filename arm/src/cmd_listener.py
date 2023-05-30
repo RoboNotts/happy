@@ -4,7 +4,7 @@ import rospy
 # from feather_pointer import *
 # from predefined_poses import *
 from std_msgs.msg import String
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, Point
 
 # from catroyale_mgt.msg import CommandTask, CatLocation, Task
 from moveit_msgs.msg import MoveGroupActionFeedback
@@ -24,13 +24,13 @@ class CommandHandler(object):
 		# self.service = rospy.ServiceProxy('speak', Speak)
 
 		rospy.Subscriber("/arm/command/position", String, self.process_command)
-		rospy.Subscriber("/arm/command/pose", Pose, self.process_pose)
+		rospy.Subscriber("/arm/command/cartesian", Point, self.process_point)
 		rospy.spin()
 
 
-	def process_pose(self, msg):
+	def process_point(self, msg):
 		rospy.loginfo(msg)
-
+		self.movement.move_to_point(msg)
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
@@ -61,6 +61,9 @@ class CommandHandler(object):
 		if msg.data == 'close':
 			self.movement.close()
 			pass
+
+		if msg.data == 'test_cart':
+			self.movement.cartesian_test()
 
 
 
