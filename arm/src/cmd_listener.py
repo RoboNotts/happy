@@ -4,12 +4,12 @@ import rospy
 # from feather_pointer import *
 # from predefined_poses import *
 from std_msgs.msg import String
+from geometry_msgs.msg import Pose
+
 # from catroyale_mgt.msg import CommandTask, CatLocation, Task
 from moveit_msgs.msg import MoveGroupActionFeedback
 from utils import MoveHandler
 from movements import Movement
-# from 
-
 
 
 class CommandHandler(object):
@@ -24,15 +24,25 @@ class CommandHandler(object):
 		# self.service = rospy.ServiceProxy('speak', Speak)
 
 		rospy.Subscriber("/arm/command/position", String, self.process_command)
-		# rospy.Subscriber("/arm/command/pose", Task, self.process_recorded_movement)
+		rospy.Subscriber("/arm/command/pose", Pose, self.process_pose)
 		rospy.spin()
+
+
+	def process_pose(self, msg):
+		rospy.loginfo(msg)
+
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
 		
-		if msg.data == 'reach':
+		if msg.data == 'reach_low':
 			# self.service("Arm is about to move. Please stand clear.")
-			self.movement.reach()
+			self.movement.reach_low()
+			pass
+
+		if msg.data == 'reach_high':
+			# self.service("Arm is about to move. Please stand clear.")
+			self.movement.reach_high()
 			pass
 
 		if msg.data == 'hunting':
