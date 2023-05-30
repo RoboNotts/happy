@@ -12,6 +12,7 @@
 
     <group ns="gen3lite">
       <node name="setup_planning_scene" pkg="arm" type="scene_planner.py" output="screen" respawn="false" />
+      <node name="cmd_handler" pkg="arm" type="cmd_listener.py" output="screen" respawn="false" />
     </group>
 
     <group ns="gen3lite" if="$(arg rviz)">
