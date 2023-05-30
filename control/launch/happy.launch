@@ -3,5 +3,5 @@
     <include file="$(find arm)/launch/bringup.launch" />
     <include file="$(find cv)/launch/cameras.launch" />
     <include file="$(find bocelli)/launch/happySpeech.launch" />
+    <include file="$(find slam)/launch/slam.launch" />
 </launch>
-
