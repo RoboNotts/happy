@@ -54,12 +54,13 @@ class Mozart:
         except rospy.ServiceException as e:
             print(f"Service Call Failed: {e}")
 
+    @staticmethod
     def main(*args, **kwargs):
         rospy.init_node('mozart')
         m = Mozart()
 
         m.speak_client("This is an orchestrator test")
-        
+
         rospy.spin()
         
 if __name__ == "__main__":
