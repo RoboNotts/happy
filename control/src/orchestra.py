@@ -1,19 +1,65 @@
 import rospy
 from bocelli.srv import Request, Listen, Speak
 from drake.msg import DrakeResults, DrakeResult
+from geometry_msgs.msg import Twist, Point
+from nav_msgs.msg import Odometry
+from tf.transformations import euler_from_quaternion
+
+
+
 
 # Mozart will interface with ROS
 class Mozart:
 
     def __init__(self):
+        ## Internal Overarching State
+        # HUNTING   - Finding POI
+        # SPEAKING  - Extracting Command 
+        # SEARCHING - Looking for object
+        # RETURN    - Returning to person
+
+        self.state = "HUNTING"
+
         ## Internal Variables
+        # Pose
+        self.x = 0
+        self.y = 0
+        self.theta = 0
+
+        # Detections
         self.people = []
 
 
         ## Setup Subscribers
         self.subscribers = {
-            "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage)
+            "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage),
+            "pose":rospy.Subscriber("/odom", Odometry, self._onODom)
         }
+
+        ## Setup Publishers
+        self.publishers = {
+            "manual_move":rospy.Publisher("/base/cmd_vel", Twist)
+        }
+
+    # This function runs periodically
+    # State Machine!
+    def act(self):
+        if self.state == "HUNTING":
+            self.speak_client("Hello! I'm happy")
+            # Robot should look around to find people.
+
+    ## Updates the current position of the robot
+    def _onOdom(self, msg):
+        self.x = msg.pose.pose.position.x
+        self.y = msg.pose.pose.position.y
+
+        # from pose get quarterion and do euler's transofrm to get 3D vector to extract yaw 
+        sep = msg.pose.pose.orientation
+        orientation_list = [sep.x, sep.y, sep.z, sep.w]
+        (roll, pitch, yaw) = euler_from_quaternion(orientation_list)
+        
+        self.theta = yaw
+
 
     ## Updates the Currently visible Person(s)
     def _onPersonImage(self, msg):
@@ -23,6 +69,7 @@ class Mozart:
             if detection.object_class == 0:
                 people.append(detection)
 
+        # Sorted by distance
         self.people = sorted(people, key=lambda x: x.zcentroid)
 
     # Client for dialogFlow
