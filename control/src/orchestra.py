@@ -60,9 +60,9 @@ class Mozart:
         rospy.spin()
         
 if __name__ == "__main__":
-    m = Mozart()
+    m = Mozart().main()
     m.speak_client("This is an orchestrator test")
-    
+
     print("why")
     
 
