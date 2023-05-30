@@ -14,6 +14,8 @@ class Mozart:
             "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage)
         }
 
+        self.speak_client("This is an orchestrator test")
+
     ## Updates the Currently visible Person(s)
     def _onPersonImage(self, msg):
         people = []
@@ -25,7 +27,7 @@ class Mozart:
         self.people = sorted(people, key=lambda x: x.zcentroid)
 
     # Client for dialogFlow
-    def dialogFlow_client(text):
+    def dialogFlow_client(self, text):
         rospy.wait_for_service('df_request')
         try:
             diaf = rospy.ServiceProxy('df_request', Request)
@@ -35,7 +37,7 @@ class Mozart:
             print(f"Service Call Failed: {e}")
         
     # Client for speaking
-    def speak_client(text):
+    def speak_client(self, text):
         rospy.wait_for_service('speak')
         try:
             speak = rospy.ServiceProxy('speak', Speak)
@@ -44,7 +46,7 @@ class Mozart:
             print(f"Service Call Failed: {e}")
     
     # Client for listening
-    def listen_client():
+    def listen_client(self):
         rospy.wait_for_service('listen')
         try:
             listen = rospy.ServiceProxy('listen', Listen)
@@ -53,9 +55,13 @@ class Mozart:
         except rospy.ServiceException as e:
             print(f"Service Call Failed: {e}")
 
+    def main(*args, **kwargs):
+        rospy.init_node('mozart')
+        m = Mozart()
+        rospy.spin()
+        
 if __name__ == "__main__":
-    m = Mozart()
-    m.speak_client("This is an orchestrator test")
+    print("why")
     
 
 # General Procedure
