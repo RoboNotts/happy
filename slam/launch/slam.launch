@@ -1,0 +1,4 @@
+<launch>
+  <node  pkg="slam"  type="navservice.py"  name="navservice" />
+  <node  pkg="slam"  type="cmdvel_proxy.py"  name="cmdvel_proxy" />
+</launch>
