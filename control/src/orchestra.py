@@ -1,4 +1,62 @@
 import rospy
+from bocelli.srv import Request, Listen, Speak
+from drake.msg import DrakeResults, DrakeResult
+
+class Mozart:
+
+    def __init__(self):
+        ## Internal Variables
+        self.people = []
+
+
+        ## Setup Subscribers
+        self.subscribers = {
+            "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage)
+        }
+
+    ## Updates the Currently visible Person(s)
+    def _onPersonImage(self, msg):
+        people = []
+        for detection in msg.results:
+            # Detection is a person
+            if detection.object_class == 0:
+                people.append(detection)
+
+        self.people = sorted(people, key=lambda x: x.zcentroid)
+
+    # Client for dialogFlow
+    def dialogFlow_client(text):
+        rospy.wait_for_service('df_request')
+        try:
+            diaf = rospy.ServiceProxy('df_request', Request)
+            response = diaf(text)
+            return response
+        except rospy.ServiceException as e:
+            print(f"Service Call Failed: {e}")
+        
+    # Client for speaking
+    def speak_client(text):
+        rospy.wait_for_service('speak')
+        try:
+            speak = rospy.ServiceProxy('speak', Speak)
+            response = speak(text)
+        except rospy.ServiceException as e:
+            print(f"Service Call Failed: {e}")
+    
+    # Client for listening
+    def listen_client():
+        rospy.wait_for_service('listen')
+        try:
+            listen = rospy.ServiceProxy('listen', Listen)
+            response = listen(5)
+            return response
+        except rospy.ServiceException as e:
+            print(f"Service Call Failed: {e}")
+
+if __name__ == "__main__":
+    m = Mozart()
+    m.speak_client("This is an orchestrator test")
+    
 
 # General Procedure
 # 1. Recieve Start Command
