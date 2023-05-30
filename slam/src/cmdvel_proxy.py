@@ -11,7 +11,7 @@ from geometry_msgs.msg import Twist
 IP = "10.42.0.1"
 PORT = 9091
 
-BASE_TOPIC = "/teleop_velocity_smoother/raw_cmd_vel"
+BASE_TOPIC = "/navigation_velocity_smoother/raw_cmd_vel_"
 
 def main():
 
