@@ -25,7 +25,7 @@ def main():
     print(f"Open navigation response: {r}", flush=True)
 
     rospack = rospkg.RosPack()
-    d = rospack.get_path("happynav")
+    d = rospack.get_path("slam")
     posraw = {}
     POSITIONS = {}
     with open(f"{d}/src/locations.json") as f:
