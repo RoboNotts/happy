@@ -94,12 +94,7 @@ class Movement(object):
 
 	def reach_low(self):
 		joint_positions = self.arm.get_current_joint_values()
-		joint_positions[0] = 1.4942272496618103
-		joint_positions[1] = -1.5880536106586103
-		joint_positions[2] = -0.03401282817805562
-		joint_positions[3] = 0.1416210478160157
-		joint_positions[4] = -0.006562028925954699
-		joint_positions[5] = -0.16848222320277273
+		joint_positions = [1.4942272496618103, -1.5880536106586103, -0.03401282817805562, 0.1416210478160157, -0.006562028925954699, -0.16848222320277273]
 		
 		self.arm.set_goal_joint_tolerance(.1)
 
@@ -109,13 +104,7 @@ class Movement(object):
 
 	def reach_high(self):
 		joint_positions = self.arm.get_current_joint_values()
-		joint_positions[0] = 1.4037335684531358
-		joint_positions[1] = -1.2520926433518067
-		joint_positions[2] = -0.0748369571600982
-		joint_positions[3] = 0.20861792504303012
-		joint_positions[4] = -0.05491651220630622
-		joint_positions[5] = -0.17301705390696043
-		
+		joint_positions = [ 1.4037335684531358, -1.2520926433518067, -0.0748369571600982, 0.2086179250430301, -0.05491651220630622, -0.17301705390696043]
 		self.arm.set_goal_joint_tolerance(.1)
 
 		self.arm.set_joint_value_target(joint_positions)
@@ -124,13 +113,7 @@ class Movement(object):
 
 	def hunting(self):
 		joint_positions = self.arm.get_current_joint_values()
-
-		joint_positions[0] = 1.7792723053518253
-		joint_positions[1] = 0.9441798223296075
-		joint_positions[2] = -1.6463384890116481   
-		joint_positions[3] = -1.668023011871509
-		joint_positions[4] = -1.9912231764990898
-		joint_positions[5] = -1.4057900614468952
+		joint_positions = [1.7198001897848298, 0.38789394014389417, -2.3331043509091396, -1.5667152987404593, -2.445029554674118, -1.3058512131161457]
 		self.arm.set_goal_joint_tolerance(.1)
 
 		self.arm.set_joint_value_target(joint_positions)
@@ -140,12 +123,7 @@ class Movement(object):
 	def reset(self):
 		joint_positions = self.arm.get_current_joint_values()
 
-		joint_positions[0] = 0.15
-		joint_positions[1] = 0.47
-		joint_positions[2] = 2.61   
-		joint_positions[3] = 0
-		joint_positions[4] = 0
-		joint_positions[5] = -1.57
+		joint_positions = [0.15, 0.47, 2.61, 0, 0, -1.57]
 		self.arm.set_goal_joint_tolerance(.1)
 
 		self.arm.set_joint_value_target(joint_positions)
