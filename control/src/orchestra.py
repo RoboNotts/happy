@@ -1,6 +1,7 @@
 import rospy
 from bocelli.srv import Request, Listen, Speak
 from drake.msg import DrakeResults, DrakeResult
+from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
@@ -18,7 +19,7 @@ class Mozart:
         # SEARCHING - Looking for object
         # RETURN    - Returning to person
 
-        self.state = "HUNTING"
+        self.state = "INIT"
 
         ## Internal Variables
         # Pose
@@ -33,19 +34,22 @@ class Mozart:
         ## Setup Subscribers
         self.subscribers = {
             "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage),
-            "pose":rospy.Subscriber("/odom", Odometry, self._onODom)
+            "pose":rospy.Subscriber("/odom", Odometry, self._onOdom)
         }
 
         ## Setup Publishers
         self.publishers = {
-            "manual_move":rospy.Publisher("/base/cmd_vel", Twist)
+            "manual_move":rospy.Publisher("/base/cmd_vel", Twist),
         }
 
     # This function runs periodically
     # State Machine!
     def act(self):
-        if self.state == "HUNTING":
-            self.speak_client("Hello! I'm happy")
+        if self.state == "INIT":
+            self.speak_client("Hello! I'm happy, Let's help some people!")
+            self.waypoint_client("center")
+            self.speak_client("I'm looking for you!")
+
             # Robot should look around to find people.
 
     ## Updates the current position of the robot
@@ -71,6 +75,18 @@ class Mozart:
 
         # Sorted by distance
         self.people = sorted(people, key=lambda x: x.zcentroid)
+
+    # Client for waypointing
+    def waypoint_client(self, waypoint):
+        print("Hmmm")
+        rospy.wait_for_service("base/move_to")
+        print("Got it!")
+        try:
+            diaf = rospy.ServiceProxy('base/move_to', MoveTo)
+            response = diaf(waypoint)
+            return response
+        except rospy.ServiceException as e:
+            print(f"Service Call Failed: {e}")
 
     # Client for dialogFlow
     def dialogFlow_client(self, text):
