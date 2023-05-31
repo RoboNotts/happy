@@ -4,14 +4,14 @@
         <arg name="camera" value="top" />
         <!-- <arg name="serial_no" value="151422063934" /> -->
         <arg name="align_depth" value="true" />
-        <!-- <arg name="filters" value="pointcloud" /> -->
+        <arg name="filters" value="pointcloud" />
     </include>
 
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="bottom" />
         <!-- <arg name="serial_no" value="143322071490" /> -->
         <arg name="align_depth" value="true" />
-        <!-- <arg name="filters" value="pointcloud" /> -->
+        <arg name="filters" value="pointcloud" />
     </include>
 
     <node pkg="tf" type="static_transform_publisher" 
