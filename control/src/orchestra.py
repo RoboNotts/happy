@@ -97,14 +97,11 @@ class Mozart:
                 # First try dialogflow inferrence
                 try: 
                     command = userIn.split(":")[0]
-                    if command == "FETCH":
-                        args = userIn.split(":")[1].split(",")
-                        print(command)
-                        print(args)
-                        waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
-                        obj = args[0]
-                    else:
-                        raise ValueError
+                    args = userIn.split(":")[1].split(",")
+                    print(f"c:{command}")
+                    print(f"a:{args}")
+                    waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                    obj = args[0]
 
                 except: # Otherwise try manual inferrence
                     for i,v in enumerate(LOCATIONS):
