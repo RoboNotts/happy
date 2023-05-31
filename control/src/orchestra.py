@@ -91,8 +91,8 @@ class Mozart:
                 obj = ""
                 args = ["",""]
 
-                result = self.listen_client().result.lower()
-                userIn = self.dialogFlow_client(result).result.lower()
+                result = str(self.listen_client().result).lower()
+                userIn = str(self.dialogFlow_client(result).result).lower()
                 print(f"m:{result}")
                 print(f"df:{userIn}")
                 # First try dialogflow inferrence
