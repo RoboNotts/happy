@@ -78,7 +78,9 @@ class Mozart:
 
     # Client for waypointing
     def waypoint_client(self, waypoint):
+        print("Hmmm")
         rospy.wait_for_service("base/move_to")
+        print("Got it!")
         try:
             diaf = rospy.ServiceProxy('base/move_to', MoveTo)
             response = diaf(waypoint)
