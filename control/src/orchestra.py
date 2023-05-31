@@ -19,7 +19,7 @@ class Mozart:
         # SEARCHING - Looking for object
         # RETURN    - Returning to person
 
-        self.state = "HUNTING"
+        self.state = "INIT"
 
         ## Internal Variables
         # Pose
@@ -45,7 +45,7 @@ class Mozart:
     # This function runs periodically
     # State Machine!
     def act(self):
-        if self.state == "HUNTING":
+        if self.state == "INIT":
             self.speak_client("Hello! I'm happy, Let's help some people!")
             self.waypoint_client("center")
             self.speak_client("I'm looking for you!")
