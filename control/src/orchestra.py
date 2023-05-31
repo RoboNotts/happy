@@ -71,7 +71,7 @@ class Mozart:
         if self.state == "INIT":
 
             #Start
-            self.speak_client("Hello! I'm happy, Let's help some people!")
+            #self.speak_client("Hello! I'm happy, Let's help some people!")
             
             
             # Find person
@@ -98,8 +98,10 @@ class Mozart:
                 result = str(result).lower()
                 # First try dialogflow inferrence
                 try: 
+                    if userIn == "":
+                        raise ValueError
                     command = userIn.split(":")[0]
-                    if command == "FETCH":
+                    if command == "fetch":
                         args = userIn.split(":")[1].split(",")
                         print(f"c:{command}")
                         print(f"a:{args}")
@@ -113,20 +115,24 @@ class Mozart:
                         if v in result:
                             waypoint = LOCATION_WAYPOINTS[i]
                             args[1] = v
+                            break
                     for o in OBJECTS:
                         for v in o:
                             if v in result:
                                 obj = o
                                 args[0] = v
-
+                                break
+                
+                print(obj, waypoint)
                 if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
                     
                 else:
+                    command = "fetch"
                     break
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
-            print(obj, waypoint)
+            
 
             
             
