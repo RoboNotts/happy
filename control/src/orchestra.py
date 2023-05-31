@@ -93,7 +93,8 @@ class Mozart:
 
                 result = self.listen_client().result.lower()
                 userIn = self.dialogFlow_client(result).result.lower()
-
+                print(f"m:{result}")
+                print(f"df:{userIn}")
                 # First try dialogflow inferrence
                 try: 
                     command = userIn.split(":")[0]
