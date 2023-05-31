@@ -46,11 +46,20 @@ class Mozart:
     # State Machine!
     def act(self):
         if self.state == "INIT":
+
+            #Robot Finds People
             self.speak_client("Hello! I'm happy, Let's help some people!")
-            self.waypoint_client("center")
+            self.waypoint_client("reading_0")
             self.speak_client("I'm looking for you!")
 
-            # Robot should look around to find people.
+            # Robot talks to people
+            self.speak_client("Hello, how can I help you today?")
+
+
+            result = self.listen_client()
+            print(result)
+            command = self.dialogFlow_client(result)
+            print(command)
 
     ## Updates the current position of the robot
     def _onOdom(self, msg):
