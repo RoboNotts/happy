@@ -1,7 +1,7 @@
 import rospy
 from bocelli.srv import Request, Listen, Speak
 from drake.msg import DrakeResults, DrakeResult
-from slam.srv import MoveTo, MoveToResult
+from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
@@ -49,7 +49,7 @@ class Mozart:
             self.speak_client("Hello! I'm happy, Let's help some people!")
             self.waypoint_client("center")
             self.speak_client("I'm looking for you!")
-            
+
             # Robot should look around to find people.
 
     ## Updates the current position of the robot
