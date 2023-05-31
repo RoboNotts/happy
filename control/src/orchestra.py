@@ -6,7 +6,29 @@ from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
 
+LOCATIONS = [
+    "reading room",
+    "living room",
+    "dining table",
+    "hall"
+]
 
+LOCATION_WAYPOINTS = [
+    "reading_0",
+    "living_room",
+    "dining_table_0",
+    "hall"
+]
+
+OBJECTS = {
+    "chips_can": ["crisps", "pringles"],
+    "tomato_soup_can": ["soup"],
+    "softball" : ["softball"],
+    "potted_meat_can": ["spam", "meat"],
+    "windex_bottle" : ["windex", "cleaner"],
+    "spatula": ["spatula"],
+    "pitcher_base": ["jug", "pitcher"],
+}
 
 
 # Mozart will interface with ROS
@@ -47,35 +69,61 @@ class Mozart:
     def act(self):
         if self.state == "INIT":
 
-            #Robot Finds People
+            #Start
             self.speak_client("Hello! I'm happy, Let's help some people!")
-            self.waypoint_client("reading_0")
-            self.speak_client("I'm looking for you!")
+            
+            
+            # Find person
 
-            # Robot talks to people
+            # Go to person
+
+            #self.waypoint_client("living_room")
+            #self.speak_client("I'm looking for you!")
+
+            
+
+            # Talk to person
             self.speak_client("Hello, how can I help you today?")
 
-            command = "?" 
-            total = 3
-            while command != "FETCH" and total > 0:
-                total -= 1
+            while True:
+                waypoint = ""
+                obj = ""
+                args = ["",""]
+
                 result = self.listen_client().result
-                print(result)
-                command= self.dialogFlow_client(result).result
-                try:
-                    command = command.split(":")[0]
-                    args = command.split(":")[1].split(",")
-                    print(command)
-                    print(args)
-                except:
-                    command = "?"
+                userIn = str(self.dialogFlow_client(result).result).lower()
+                print(f"m:{result}")
+                print(f"df:{userIn}")
+                result = str(result).lower()
+                # First try dialogflow inferrence
+                try: 
+                    command = userIn.split(":")[0]
+                    args = userIn.split(":")[1].split(",")
+                    print(f"c:{command}")
+                    print(f"a:{args}")
+                    waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                    obj = args[0]
+
+                except: # Otherwise try manual inferrence
+                    for i,v in enumerate(LOCATIONS):
+                        if v in result:
+                            waypoint = LOCATION_WAYPOINTS[i]
+                            args[1] = v
+                    for o in OBJECTS:
+                        for v in o:
+                            if v in result:
+                                obj = o
+
+                if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
-            
-            if total == 0 or command != "FETCH":
-                command = "FETCH"
-                args = ["Windex", "Reading Room"]
+                    
+                else:
+                    break
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
+            print(obj, waypoint)
+
+            
             
             
 
@@ -151,9 +199,11 @@ class Mozart:
         
 if __name__ == "__main__":
     m = Mozart()
-    m.speak_client("This is an orchestrator test")
-    
-    print("why")
+    r = rospy.Rate(5)
+    m.act()
+    #while not rospy.is_shutdown():
+    #    m.act() # DO THINGS!!!
+    #    r.sleep()
     
 
 # General Procedure
