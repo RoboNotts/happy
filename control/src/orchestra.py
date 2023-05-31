@@ -70,7 +70,7 @@ class Mozart:
         if self.state == "INIT":
 
             #Start
-            self.speak_client("Hello! I'm happy, Let's help some people!")
+            #self.speak_client("Hello! I'm happy, Let's help some people!")
             
             
             # Find person
@@ -83,7 +83,7 @@ class Mozart:
             
 
             # Talk to person
-            self.speak_client("Hello, how can I help you today?")
+            self.speak_client("Hello, how can I help you today? Please speak clearly")
 
             while True:
                 waypoint = ""
@@ -97,31 +97,41 @@ class Mozart:
                 result = str(result).lower()
                 # First try dialogflow inferrence
                 try: 
-                    command = userIn.split(":")[0]
-                    args = userIn.split(":")[1].split(",")
-                    print(f"c:{command}")
-                    print(f"a:{args}")
-                    waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
-                    obj = args[0]
+                    if userIn == "":
+                        raise ValueError
+                    command = userIn.split(": ")[0]
+                    if command == "fetch":
+                        args = userIn.split(": ")[1].split(", ")
+                        print(f"c:{command}")
+                        print(f"a:{args}")
+                        waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                        obj = args[0]
+                    else:
+                        raise ValueError
 
                 except: # Otherwise try manual inferrence
                     for i,v in enumerate(LOCATIONS):
                         if v in result:
                             waypoint = LOCATION_WAYPOINTS[i]
                             args[1] = v
-                    for o in OBJECTS:
-                        for v in o:
-                            if v in result:
-                                obj = o
-
+                            break
+                    for k, v in OBJECTS.items():
+                        for o in v:
+                            if o in result:
+                                obj = k
+                                args[0] = o
+                                break
+                
+                print(obj, waypoint)
                 if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
                     
                 else:
+                    command = "fetch"
                     break
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
-            print(obj, waypoint)
+            
 
             
             
