@@ -56,9 +56,9 @@ class Mozart:
             self.speak_client("Hello, how can I help you today?")
 
 
-            result = self.listen_client()
+            result = self.listen_client().result
             print(result)
-            command = self.dialogFlow_client(result)
+            command = self.dialogFlow_client(result).result
             print(command)
 
     ## Updates the current position of the robot
