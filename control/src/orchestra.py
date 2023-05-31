@@ -1,5 +1,5 @@
 import rospy
-from bocelli.srv import Request, Listen, Speak
+from bocelli.srv import Request, Listen, Speak, ListenResponse, SpeakResponse, RequestResponse
 from drake.msg import DrakeResults, DrakeResult
 from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
@@ -46,11 +46,25 @@ class Mozart:
     # State Machine!
     def act(self):
         if self.state == "INIT":
+
+            #Robot Finds People
             self.speak_client("Hello! I'm happy, Let's help some people!")
-            self.waypoint_client("center")
+            self.waypoint_client("reading_0")
             self.speak_client("I'm looking for you!")
 
-            # Robot should look around to find people.
+            # Robot talks to people
+            self.speak_client("Hello, how can I help you today?")
+
+            command = "?" 
+            while command != "FETCH":
+                result = self.listen_client().result
+                print(result)
+                (command, args) = self.dialogFlow_client(result).result
+                print(command)
+
+            self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
+            
+            
 
     ## Updates the current position of the robot
     def _onOdom(self, msg):
