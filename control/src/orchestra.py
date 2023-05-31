@@ -84,7 +84,7 @@ class Mozart:
             
 
             # Talk to person
-            self.speak_client("Hello, how can I help you today?")
+            self.speak_client("Hello, how can I help you today? Please speak clearly")
 
             while True:
                 waypoint = ""
@@ -99,11 +99,14 @@ class Mozart:
                 # First try dialogflow inferrence
                 try: 
                     command = userIn.split(":")[0]
-                    args = userIn.split(":")[1].split(",")
-                    print(f"c:{command}")
-                    print(f"a:{args}")
-                    waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
-                    obj = args[0]
+                    if command == "FETCH":
+                        args = userIn.split(":")[1].split(",")
+                        print(f"c:{command}")
+                        print(f"a:{args}")
+                        waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                        obj = args[0]
+                    else:
+                        raise ValueError
 
                 except: # Otherwise try manual inferrence
                     for i,v in enumerate(LOCATIONS):
@@ -114,6 +117,7 @@ class Mozart:
                         for v in o:
                             if v in result:
                                 obj = o
+                                args[0] = v
 
                 if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
