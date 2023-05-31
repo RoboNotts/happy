@@ -100,9 +100,9 @@ class Mozart:
                 try: 
                     if userIn == "":
                         raise ValueError
-                    command = userIn.split(":")[0]
+                    command = userIn.split(": ")[0]
                     if command == "fetch":
-                        args = userIn.split(":")[1].split(",")
+                        args = userIn.split(": ")[1].split(", ")
                         print(f"c:{command}")
                         print(f"a:{args}")
                         waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
@@ -116,11 +116,11 @@ class Mozart:
                             waypoint = LOCATION_WAYPOINTS[i]
                             args[1] = v
                             break
-                    for o in OBJECTS:
-                        for v in o:
-                            if v in result:
-                                obj = o
-                                args[0] = v
+                    for k, v in OBJECTS.items():
+                        for o in v:
+                            if o in result:
+                                obj = k
+                                args[0] = o
                                 break
                 
                 print(obj, waypoint)
