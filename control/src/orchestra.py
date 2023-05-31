@@ -59,7 +59,9 @@ class Mozart:
             self.speak_client("Hello, how can I help you today?")
 
             command = "?" 
-            while command != "FETCH":
+            total = 3
+            while command != "FETCH" and total > 0:
+                total -= 1
                 result = self.listen_client().result
                 print(result)
                 command= self.dialogFlow_client(result).result
@@ -71,6 +73,10 @@ class Mozart:
                 except:
                     command = "?"
                     self.speak_client("Repeat that for me please...")
+            
+            if total == 0 or command != "FETCH":
+                command = "FETCH"
+                args = ["Windex", "Reading Room"]
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
             self.waypoint_client("reading_0")
