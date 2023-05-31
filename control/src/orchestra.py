@@ -7,7 +7,32 @@ from nav_msgs.msg import Odometry
 from time import sleep
 from tf.transformations import euler_from_quaternion
 
+LOCATIONS = [
+    "reading room",
+    "living room",
+    "dining table",
+    "hall"
+]
 
+LOCATION_WAYPOINTS = [
+    "reading_0",
+    "living_room",
+    "dining_table_0",
+    "hall"
+]
+
+OBJECTS = [
+    "chips_can",
+    "tomato_soup_can",
+    "softball",
+    "potted_meat_can",
+    "windex_bottle",
+    "cup",
+    "spatula",
+    "pitcher_base",
+    "shirt",
+    "rope"
+]
 
 
 # Mozart will interface with ROS
@@ -48,38 +73,59 @@ class Mozart:
     def act(self):
         if self.state == "INIT":
 
-            #Robot Finds People
+            #Start
             self.speak_client("Hello! I'm happy, Let's help some people!")
-            self.waypoint_client("living_room")
-            self.speak_client("I'm looking for you!")
+            
+            
+            # Find person
 
-            sleep(3)
+            # Go to person
 
-            # Robot talks to people
+            #self.waypoint_client("living_room")
+            #self.speak_client("I'm looking for you!")
+
+            
+
+            # Talk to person
             self.speak_client("Hello, how can I help you today?")
 
-            command = "?" 
-            total = 3
-            while command != "FETCH" and total > 0:
-                total -= 1
-                result = self.listen_client().result
-                print(result)
-                command= self.dialogFlow_client(result).result
-                try:
-                    command = command.split(":")[0]
-                    args = command.split(":")[1].split(",")
-                    print(command)
-                    print(args)
-                except:
-                    command = "?"
+            while True:
+                waypoint = ""
+                obj = ""
+                args = ["",""]
+
+                result = self.listen_client().result.lower()
+                userIn = self.dialogFlow_client(result).result.lower()
+
+                # First try dialogflow inferrence
+                try: 
+                    command = userIn.split(":")[0]
+                    if command == "FETCH":
+                        args = userIn.split(":")[1].split(",")
+                        print(command)
+                        print(args)
+                        waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                        obj = args[0]
+                    else:
+                        raise ValueError
+
+                except: # Otherwise try manual inferrence
+                    for i,v in enumerate(LOCATIONS):
+                        if v in result:
+                            waypoint = LOCATION_WAYPOINTS[i]
+                            args[1] = v
+                    for v in OBJECTS:
+                        if v in result:
+                            obj = v
+
+                if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
-            
-            if total == 0 or command != "FETCH":
-                command = "FETCH"
-                args = ["Windex", "Reading Room"]
+                    
+                else:
+                    break
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
-            self.waypoint_client("reading_0")
+            print(obj, waypoint)
             
             
 
