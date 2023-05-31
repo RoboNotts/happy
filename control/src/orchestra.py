@@ -91,10 +91,11 @@ class Mozart:
                 obj = ""
                 args = ["",""]
 
-                result = str(self.listen_client().result).lower()
+                result = self.listen_client().result
                 userIn = str(self.dialogFlow_client(result).result).lower()
                 print(f"m:{result}")
                 print(f"df:{userIn}")
+                result = str(result).lower()
                 # First try dialogflow inferrence
                 try: 
                     command = userIn.split(":")[0]
@@ -122,6 +123,8 @@ class Mozart:
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
             print(obj, waypoint)
+
+            
             
             
 
@@ -195,9 +198,10 @@ if __name__ == "__main__":
     rospy.init_node("mozart")
     m = Mozart()
     r = rospy.Rate(5)
-    while not rospy.is_shutdown():
-        m.act() # DO THINGS!!!
-        r.sleep()
+    r.act()
+    #while not rospy.is_shutdown():
+    #    m.act() # DO THINGS!!!
+    #    r.sleep()
     
 
 # General Procedure
