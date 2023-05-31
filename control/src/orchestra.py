@@ -64,12 +64,13 @@ class Mozart:
                 print(result)
                 command= self.dialogFlow_client(result).result
                 try:
-                    args = command.split(":")[0]
-                    command = command.split(":")[1].split(",")
+                    command = command.split(":")[0]
+                    args = command.split(":")[1].split(",")
                     print(command)
                     print(args)
                 except:
                     command = "?"
+                    self.speak_client("Repeat that for me please...")
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
             self.waypoint_client("reading_0")
