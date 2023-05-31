@@ -60,7 +60,13 @@ class Mozart:
                 result = self.listen_client().result
                 print(result)
                 command= self.dialogFlow_client(result).result
-                print(command)
+                try:
+                    args = command.split(":")[0]
+                    command = command.split(":")[1].split(",")
+                    print(command)
+                    print(args)
+                except:
+                    command = "?"
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
             
