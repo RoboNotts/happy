@@ -198,7 +198,7 @@ if __name__ == "__main__":
     rospy.init_node("mozart")
     m = Mozart()
     r = rospy.Rate(5)
-    r.act()
+    m.act()
     #while not rospy.is_shutdown():
     #    m.act() # DO THINGS!!!
     #    r.sleep()
