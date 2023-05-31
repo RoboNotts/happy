@@ -1,5 +1,5 @@
 import rospy
-from bocelli.srv import Request, Listen, Speak
+from bocelli.srv import Request, Listen, Speak, ListenResponse, SpeakResponse, RequestResponse
 from drake.msg import DrakeResults, DrakeResult
 from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
