@@ -21,18 +21,15 @@ LOCATION_WAYPOINTS = [
     "hall"
 ]
 
-OBJECTS = [
-    "chips_can",
-    "tomato_soup_can",
-    "softball",
-    "potted_meat_can",
-    "windex_bottle",
-    "cup",
-    "spatula",
-    "pitcher_base",
-    "shirt",
-    "rope"
-]
+OBJECTS = {
+    "chips_can": ["crisps", "pringles"],
+    "tomato_soup_can": ["soup"],
+    "softball" : ["softball"],
+    "potted_meat_can": ["spam", "meat"],
+    "windex_bottle" : ["windex", "cleaner"],
+    "spatula": ["spatula"],
+    "pitcher_base": ["jug", "pitcher"],
+}
 
 
 # Mozart will interface with ROS
@@ -114,9 +111,10 @@ class Mozart:
                         if v in result:
                             waypoint = LOCATION_WAYPOINTS[i]
                             args[1] = v
-                    for v in OBJECTS:
-                        if v in result:
-                            obj = v
+                    for o in OBJECTS:
+                        for v in o:
+                            if v in result:
+                                obj = o
 
                 if obj == "" or waypoint == "":
                     self.speak_client("Repeat that for me please...")
