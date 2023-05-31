@@ -55,11 +55,16 @@ class Mozart:
             # Robot talks to people
             self.speak_client("Hello, how can I help you today?")
 
+            command = "?" 
+            while command != "FETCH":
+                result = self.listen_client().result
+                print(result)
+                (command, args) = self.dialogFlow_client(result).result
+                print(command)
 
-            result = self.listen_client().result
-            print(result)
-            command = self.dialogFlow_client(result).result
-            print(command)
+            self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
+            
+            
 
     ## Updates the current position of the robot
     def _onOdom(self, msg):
@@ -99,9 +104,9 @@ class Mozart:
 
     # Client for dialogFlow
     def dialogFlow_client(self, text):
-        rospy.wait_for_service('df_request')
+        rospy.wait_for_service('cmd_request')
         try:
-            diaf = rospy.ServiceProxy('df_request', Request)
+            diaf = rospy.ServiceProxy('cmd_request', Request)
             response = diaf(text)
             return response
         except rospy.ServiceException as e:
