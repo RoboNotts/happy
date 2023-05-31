@@ -59,7 +59,7 @@ class Mozart:
             while command != "FETCH":
                 result = self.listen_client().result
                 print(result)
-                (command, args) = self.dialogFlow_client(result).result
+                command= self.dialogFlow_client(result).result
                 print(command)
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
