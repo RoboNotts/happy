@@ -104,9 +104,9 @@ class Mozart:
 
     # Client for dialogFlow
     def dialogFlow_client(self, text):
-        rospy.wait_for_service('cmd_request')
+        rospy.wait_for_service('df_request')
         try:
-            diaf = rospy.ServiceProxy('cmd_request', Request)
+            diaf = rospy.ServiceProxy('df_request', Request)
             response = diaf(text)
             return response
         except rospy.ServiceException as e:
