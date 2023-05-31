@@ -34,7 +34,7 @@ class Mozart:
         ## Setup Subscribers
         self.subscribers = {
             "people_resuts":rospy.Subscriber("/drake/results", DrakeResults, self._onPersonImage),
-            "pose":rospy.Subscriber("/odom", Odometry, self._onODom)
+            "pose":rospy.Subscriber("/odom", Odometry, self._onOdom)
         }
 
         ## Setup Publishers
