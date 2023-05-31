@@ -4,6 +4,7 @@ from drake.msg import DrakeResults, DrakeResult
 from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
+from time import sleep
 from tf.transformations import euler_from_quaternion
 
 
@@ -49,8 +50,10 @@ class Mozart:
 
             #Robot Finds People
             self.speak_client("Hello! I'm happy, Let's help some people!")
-            self.waypoint_client("reading_0")
+            self.waypoint_client("living_room")
             self.speak_client("I'm looking for you!")
+
+            sleep(3)
 
             # Robot talks to people
             self.speak_client("Hello, how can I help you today?")
@@ -69,6 +72,7 @@ class Mozart:
                     command = "?"
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
+            self.waypoint_client("reading_0")
             
             
 
