@@ -10,7 +10,7 @@ from tf.transformations import euler_from_quaternion
 LOCATIONS = [
     "reading room",
     "living room",
-    "dining table",
+    "dining room",
     "hall"
 ]
 
@@ -125,7 +125,7 @@ class Mozart:
                 
                 print(obj, waypoint)
                 if obj == "" or waypoint == "":
-                    self.speak_client("Repeat that for me please...")
+                    self.speak_client("Repeat that for me please, I did not understand you")
                     
                 else:
                     command = "fetch"
