@@ -102,13 +102,15 @@ class Mozart:
             
             # Find person
 
-            l = self.find_client().location
+            l = self.find_client()
 
             # Go to person
-            if l == "unkonwn":
+            if l == None or l.location == "unknown":
                 print("MAN")
                 l == 'dining_table_1'
-                
+            else:
+                l = l.location
+
             self.waypoint_client(l)
             
             self.speak_client("I'm looking for you!")
