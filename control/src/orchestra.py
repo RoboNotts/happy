@@ -44,6 +44,20 @@ TRY_AGAIN_MESSAGES = [
     "I'm sorry, could you clarify what you just said?"
 ]
 
+START_MESSAGES = [
+    "Hello! I'm Happy. How can I assist?",
+    "Welcome! I'm Happy. Ready to help!",
+    "Greetings! I'm Happy. How may I serve?",
+    "Good day! I'm Happy. How can I assist you?",
+    "Hi there! I'm Happy. How may I help?",
+    "Salutations! I'm Happy. Ready to assist!",
+    "Greetings! I'm Happy. How can I help?",
+    "Hello! I'm Happy. How may I assist?",
+    "Welcome! I'm Happy. How can I help?",
+    "Good day! I'm Happy. How may I assist?"
+]
+
+
 # Mozart will interface with ROS
 class Mozart:
 
@@ -83,7 +97,7 @@ class Mozart:
         if self.state == "INIT":
 
             #Start
-            self.speak_client("Hello! I'm happy, Let's help some people!")
+            self.speak_client(choice(START_MESSAGES))
             
             
             # Find person
