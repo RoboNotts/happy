@@ -90,7 +90,7 @@ class Mozart:
 
             # Go to person
 
-            #self.waypoint_client("living_room")
+            self.waypoint_client("hall")
             
             self.speak_client("I'm looking for you!")
 
@@ -154,7 +154,7 @@ class Mozart:
                 args = ["soup can", "reading room"]
                 obj = "tomato_soup_can"
                 waypoint = "reading_close"
-                print("USING MANULA INPUT")
+                print("USING MANUAL INPUT")
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
 
