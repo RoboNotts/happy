@@ -103,7 +103,7 @@ def main():
 
                 return
             cmd_vel.publish(twist)
-            sleep(0.8)
+            sleep(1.2)
 
 
         vs["sub"] = rospy.Subscriber("/drake/results", DrakeResults, on_person_image)
