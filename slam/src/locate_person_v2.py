@@ -68,9 +68,9 @@ def main():
             for detection in msg.results:
                 if detection.object_class != 0:
                     continue
-                if detection.ycentroid < 300:
+                if detection.ycentroid < 250:
                     continue
-                if not 80 < detection.xcentroid < 560:
+                if not 50 < detection.xcentroid < 590:
                     continue
                 if vs["person"] == None:
                     vs["person"] = detection
