@@ -1,7 +1,7 @@
 import rospy
 from bocelli.srv import Request, Listen, Speak, ListenResponse, SpeakResponse, RequestResponse
 from drake.msg import DrakeResults, DrakeResult
-from slam.srv import MoveTo
+from slam.srv import MoveTo, Locate
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from time import sleep
@@ -102,9 +102,14 @@ class Mozart:
             
             # Find person
 
-            # Go to person
+            l = self.find_client().location
 
-            #self.waypoint_client("reading_close")
+            # Go to person
+            if l == "unkonwn":
+                print("MAN")
+                l == 'dining_table_1'
+                
+            self.waypoint_client(l)
             
             self.speak_client("I'm looking for you!")
 
@@ -169,7 +174,7 @@ class Mozart:
 
                 if attempts == 0:
                     command = "fetch"
-                    args = ["soup can", "reading room"]
+                    args = ["soup can", "living room"]
                     obj = "tomato_soup_can"
                     waypoint = "reading_close"
                     print("USING MANUAL INPUT")
@@ -180,14 +185,10 @@ class Mozart:
                     break
                 
             # Go to location of object
-            #self.waypoint_client(waypoint)
+            self.waypoint_client(waypoint)
 
             exit()
-            
 
-            
-            
-            
 
     ## Updates the current position of the robot
     def _onOdom(self, msg):
@@ -212,6 +213,15 @@ class Mozart:
 
         # Sorted by distance
         self.people = sorted(people, key=lambda x: x.zcentroid)
+
+    def find_client(self):
+        rospy.wait_for_service('base/locate_person')
+        try:
+            diaf = rospy.ServiceProxy('base/locate_person', Locate)
+            response = diaf()
+            return response
+        except rospy.ServiceException as e:
+            print(f"Service Call Failed: {e}")
 
     # Client for waypointing
     def waypoint_client(self, waypoint):
