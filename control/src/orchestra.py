@@ -102,10 +102,10 @@ class Mozart:
             
             # Find person
 
-            l = self.find_client().location
+            l = self.find_client()
 
             # Go to person
-            if l == "unkonwn" or l == None:
+            if l == None or l.location == "unknown":
                 print("MAN")
                 l == 'dining_table_1'
 
