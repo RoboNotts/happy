@@ -77,7 +77,6 @@ class Movement(object):
 	# 	self.scene = moveit_commander.PlanningSceneInterface(ns=rospy.get_namespace())
 	# 	self.arm = moveit_commander.MoveGroupCommander(arm_group_name, ns=rospy.get_namespace())
 	# 	# self.grip = moveit_commander.MoveGroupCommander(gripper_group_name, ns=rospy.get_namespace())
-			
 
 	def move_to_pose(self, lx, ly, lz, x, y, z, w):
 		pose_goal = Pose()
@@ -91,41 +90,37 @@ class Movement(object):
 
 		result = self.move_handler.request_movement(pose_goal)
 		return result
+	
+	def poised(self):
+		joint_positions = [1.4392047436441193, -0.1685397474823187, 2.4947236079827784, -1.7980481236691022, 1.096844999186182, 1.6095996491417872]
+		self.move_to_joint(joint_positions)
+
+	def poised2(self):
+		joint_positions = [2.4147382278033387, -0.8096169503506285, 1.5959259148408842, -0.5561937368119967, 1.1516504575750315, 1.0981803081567476]
+		self.move_to_joint(joint_positions)
+
+	def lift(self):
+		joint_positions = [2.1169275757441377, -0.8745852977753303, 1.0230999380730157, -0.43398447018156894, 0.6362366412709822, 0.7577060817505864]
+		self.move_to_joint(joint_positions)
 
 	def reach_low(self):
-		joint_positions = self.arm.get_current_joint_values()
 		joint_positions = [1.4942272496618103, -1.5880536106586103, -0.03401282817805562, 0.1416210478160157, -0.006562028925954699, -0.16848222320277273]
+		self.move_to_joint(joint_positions)	
 		
-		self.arm.set_goal_joint_tolerance(.1)
-
-		self.arm.set_joint_value_target(joint_positions)
-		self.arm.set_path_constraints(None)
-		self.arm.go(wait=False)
-
 	def reach_high(self):
-		joint_positions = self.arm.get_current_joint_values()
 		joint_positions = [ 1.4037335684531358, -1.2520926433518067, -0.0748369571600982, 0.2086179250430301, -0.05491651220630622, -0.17301705390696043]
-		self.arm.set_goal_joint_tolerance(.1)
-
-		self.arm.set_joint_value_target(joint_positions)
-		self.arm.set_path_constraints(None)
-		self.arm.go(wait=False)
-
+		self.move_to_joint(joint_positions)	
+		
 	def hunting(self):
-		joint_positions = self.arm.get_current_joint_values()
 		joint_positions = [1.7198001897848298, 0.38789394014389417, -2.3331043509091396, -1.5667152987404593, -2.445029554674118, -1.3058512131161457]
-		self.arm.set_goal_joint_tolerance(.1)
-
-		self.arm.set_joint_value_target(joint_positions)
-		self.arm.set_path_constraints(None)
-		self.arm.go(wait=False)
+		self.move_to_joint(joint_positions)	
 
 	def reset(self):
-		joint_positions = self.arm.get_current_joint_values()
-
 		joint_positions = [0.15, 0.47, 2.61, 0, 0, -1.57]
-		self.arm.set_goal_joint_tolerance(.1)
+		self.move_to_joint(joint_positions)	
 
+	def move_to_joint(self, joint_positions):
+		self.arm.set_goal_joint_tolerance(.1)
 		self.arm.set_joint_value_target(joint_positions)
 		self.arm.set_path_constraints(None)
 		self.arm.go(wait=False)
