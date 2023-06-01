@@ -3,10 +3,12 @@
 import math
 
 import rospy
+from time import sleep
 from geometry_msgs.msg import Twist
 
 from roslibpy.tf import TFClient
 import roslibpy
+
 
 from drake.msg import DrakeResults
 
@@ -101,6 +103,7 @@ def main():
 
                 return
             cmd_vel.publish(twist)
+            sleep(0.8)
 
 
         vs["sub"] = rospy.Subscriber("/drake/results", DrakeResults, on_person_image)
