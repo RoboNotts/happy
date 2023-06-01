@@ -22,7 +22,7 @@ def main():
 
     cmd_vel = rospy.Publisher("/base/cmd_vel", Twist, queue_size=10)
     twist = Twist()
-    twist.angular.z = 0.5
+    twist.angular.z = math.pi / 3 #Third of a pi
 
     rospy.init_node("locate_person", anonymous=True)
 
@@ -68,6 +68,8 @@ def main():
                     continue
                 if detection.ycentroid < 300:
                     continue
+                if not 80 < detection.xcentroid < 560:
+                    continue
                 if vs["person"] == None:
                     vs["person"] = detection
                     vs["final_rot"] = cur_rot
@@ -85,6 +87,7 @@ def main():
                 final_loc = None
                 final_rot = vs["final_rot"]
                 print(f"Selected rotation: {final_rot}")
+
                 if final_rot <= 1.216 and final_rot > -0.7:
                     final_loc = "reading_0"
                 elif final_rot <= -0.7 and final_rot >= -0.21:
@@ -93,6 +96,7 @@ def main():
                     final_loc = "dining_table_0"
                 else:
                     final_loc = "hall"
+
                 print(f"Selected location: {final_loc}")
 
                 return

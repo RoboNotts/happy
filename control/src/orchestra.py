@@ -4,6 +4,8 @@ from drake.msg import DrakeResults, DrakeResult
 from slam.srv import MoveTo
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
+from time import sleep
+from random import choice
 from tf.transformations import euler_from_quaternion
 
 LOCATIONS = [
@@ -14,8 +16,8 @@ LOCATIONS = [
 ]
 
 LOCATION_WAYPOINTS = [
-    "reading_0",
-    "living_room",
+    "reading_close",
+    "shelves",
     "dining_table_0",
     "hall"
 ]
@@ -30,6 +32,16 @@ OBJECTS = {
     "pitcher_base": ["jug", "pitcher"],
 }
 
+TRY_AGAIN_MESSAGES = [
+    "Sorry, could you please say that again?",
+    "I didn't catch that. Can you repeat what you said?",
+    "Pardon me, but could you repeat yourself?",
+    "I'm sorry, I didn't quite hear what you said. Could you say it again?",
+    "Excuse me, would you mind repeating what you just said?",
+    "Apologies, I didn't understand. Can you please repeat it?",
+    "Could you please go over that again? I didn't get it.",
+    "I'm sorry, could you clarify what you just said?"
+]
 
 # Mozart will interface with ROS
 class Mozart:
@@ -110,6 +122,8 @@ class Mozart:
                         raise ValueError
 
                 except: # Otherwise try manual inferrence
+                    obj = ""
+                    waypoint = ""
                     for i,v in enumerate(LOCATIONS):
                         if v in result:
                             waypoint = LOCATION_WAYPOINTS[i]
@@ -124,13 +138,16 @@ class Mozart:
                 
                 print(obj, waypoint)
                 if obj == "" or waypoint == "":
-                    self.speak_client("Repeat that for me please...")
+                    self.speak_client(choice(TRY_AGAIN_MESSAGES))
                     
                 else:
                     command = "fetch"
                     break
 
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
+
+            # Go to location of object
+            self.waypoint_client(waypoint)
             
 
             
