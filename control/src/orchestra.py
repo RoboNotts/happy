@@ -117,7 +117,7 @@ class Mozart:
                 attempts = 3
 
                 while attempts > 0:
-                    attempts -= 1
+                    
                     waypoint = ""
                     obj = ""
                     args = ["",""]
@@ -160,10 +160,12 @@ class Mozart:
                     print(obj, waypoint)
                     if obj == "" or waypoint == "":
                         self.speak_client(choice(TRY_AGAIN_MESSAGES))
+                        attempts -= 1
                         
                     else:
                         command = "fetch"
                         break
+                    
 
                 if attempts == 0:
                     command = "fetch"
