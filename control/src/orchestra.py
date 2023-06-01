@@ -108,6 +108,8 @@ class Mozart:
             if l == None or l.location == "unknown":
                 print("MAN")
                 l == 'dining_table_1'
+            else:
+                l = l.location
 
             self.waypoint_client(l)
             
