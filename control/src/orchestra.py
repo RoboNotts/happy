@@ -138,6 +138,7 @@ class Mozart:
                             print(f"a:{args}")
                             waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
                             obj = OBJECTS[args[0]][0]
+                            args = obj
                         else:
                             raise ValueError
 
@@ -152,8 +153,8 @@ class Mozart:
                         for k, v in OBJECTS.items():
                             for o in v:
                                 if o in result:
-                                    obj = o
-                                    args[0] = k
+                                    obj = k
+                                    args[0] = o
                                     break
                     
                     print(obj, waypoint)
