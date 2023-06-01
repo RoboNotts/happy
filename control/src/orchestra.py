@@ -26,6 +26,7 @@ OBJECTS = {
     "chips_can": ["crisps", "pringles"],
     "tomato_soup_can": ["soup"],
     "softball" : ["softball"],
+    "tennisball" : ["tennis ball", "ball"],
     "potted_meat_can": ["spam", "meat"],
     "windex_bottle" : ["windex", "cleaner"],
     "spatula": ["spatula"],

@@ -3,10 +3,12 @@
 import math
 
 import rospy
+from time import sleep
 from geometry_msgs.msg import Twist
 
 from roslibpy.tf import TFClient
 import roslibpy
+
 
 from drake.msg import DrakeResults
 
@@ -22,7 +24,7 @@ def main():
 
     cmd_vel = rospy.Publisher("/base/cmd_vel", Twist, queue_size=10)
     twist = Twist()
-    twist.angular.z = math.pi / 3 #Third of a pi
+    twist.angular.z = (math.pi / 3) * (480/640) #Third of a pi
 
     rospy.init_node("locate_person", anonymous=True)
 
@@ -66,9 +68,9 @@ def main():
             for detection in msg.results:
                 if detection.object_class != 0:
                     continue
-                if detection.ycentroid < 300:
+                if detection.ycentroid < 250:
                     continue
-                if not 80 < detection.xcentroid < 560:
+                if not 50 < detection.xcentroid < 590:
                     continue
                 if vs["person"] == None:
                     vs["person"] = detection
@@ -101,6 +103,7 @@ def main():
 
                 return
             cmd_vel.publish(twist)
+            sleep(1.2)
 
 
         vs["sub"] = rospy.Subscriber("/drake/results", DrakeResults, on_person_image)
