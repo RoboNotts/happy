@@ -24,7 +24,7 @@ def main():
 
     cmd_vel = rospy.Publisher("/base/cmd_vel", Twist, queue_size=10)
     twist = Twist()
-    twist.angular.z = math.pi / 3 #Third of a pi
+    twist.angular.z = (math.pi / 3) * (480/640) #Third of a pi
 
     rospy.init_node("locate_person", anonymous=True)
 
