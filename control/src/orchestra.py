@@ -97,9 +97,9 @@ class Mozart:
             
 
             # Talk to person
-            self.speak_client("Hello, how can I help you today? Please speak clearly")
 
             while True:
+                self.speak_client("Hello, how can I help you today? Please speak clearly")
                 attempts = 3
 
                 while attempts > 0:
@@ -123,7 +123,7 @@ class Mozart:
                             print(f"c:{command}")
                             print(f"a:{args}")
                             waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
-                            obj = args[0]
+                            obj = OBJECTS[args[0]][0]
                         else:
                             raise ValueError
 
