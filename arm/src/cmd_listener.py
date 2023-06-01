@@ -53,37 +53,29 @@ class CommandHandler(object):
 		rospy.loginfo(msg.data)
 		
 		if msg.data == 'reach_low':
-			# self.service("Arm is about to move. Please stand clear.")
 			self.movement.reach_low()
-			pass
-
+			
 		if msg.data == 'reach_high':
-			# self.service("Arm is about to move. Please stand clear.")
 			self.movement.reach_high()
-			pass
-
+			
 		if msg.data == 'hunting':
-			# self.service("Arm is about to move. Please stand clear.")
 			self.movement.hunting()
 
 		if msg.data == 'home':
-			# self.service("Arm is about to move. Please stand clear.")
 			self.movement.reset()
-			pass
-
+			
 		if msg.data == 'open':
 			self.movement.open()
-			pass
-
+			
 		if msg.data == 'close':
 			self.movement.close()
-			pass
-
+			
 		if msg.data == 'test_cart':
 			self.movement.cartesian_test()
 
-
-
+		if msg.data == 'poised':
+			self.movement.poised()
+			
 if __name__ == '__main__':
 	cmd_handler = CommandHandler()
 
