@@ -90,65 +90,82 @@ class Mozart:
 
             # Go to person
 
-            #self.waypoint_client("living_room")
-            #self.speak_client("I'm looking for you!")
+            #self.waypoint_client("reading_close")
+            
+            self.speak_client("I'm looking for you!")
 
             
 
             # Talk to person
-            self.speak_client("Hello, how can I help you today? Please speak clearly")
 
             while True:
-                waypoint = ""
-                obj = ""
-                args = ["",""]
+                self.speak_client("Hello, how can I help you today? Please speak clearly")
+                attempts = 3
 
-                result = self.listen_client().result
-                userIn = str(self.dialogFlow_client(result).result).lower()
-                print(f"m:{result}")
-                print(f"df:{userIn}")
-                result = str(result).lower()
-                # First try dialogflow inferrence
-                try: 
-                    if userIn == "":
-                        raise ValueError
-                    command = userIn.split(": ")[0]
-                    if command == "fetch":
-                        args = userIn.split(": ")[1].split(", ")
-                        print(f"c:{command}")
-                        print(f"a:{args}")
-                        waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
-                        obj = args[0]
-                    else:
-                        raise ValueError
-
-                except: # Otherwise try manual inferrence
-                    obj = ""
+                while attempts > 0:
+                    attempts -= 1
                     waypoint = ""
-                    for i,v in enumerate(LOCATIONS):
-                        if v in result:
-                            waypoint = LOCATION_WAYPOINTS[i]
-                            args[1] = v
-                            break
-                    for k, v in OBJECTS.items():
-                        for o in v:
-                            if o in result:
-                                obj = k
-                                args[0] = o
+                    obj = ""
+                    args = ["",""]
+
+                    result = self.listen_client().result
+                    userIn = str(self.dialogFlow_client(result).result).lower()
+                    print(f"m:{result}")
+                    print(f"df:{userIn}")
+                    result = str(result).lower()
+                    # First try dialogflow inferrence
+                    try: 
+                        if userIn == "":
+                            raise ValueError
+                        command = userIn.split(": ")[0]
+                        if command == "fetch":
+                            args = userIn.split(": ")[1].split(", ")
+                            print(f"c:{command}")
+                            print(f"a:{args}")
+                            waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
+                            obj = OBJECTS[args[0]][0]
+                        else:
+                            raise ValueError
+
+                    except: # Otherwise try manual inferrence
+                        obj = ""
+                        waypoint = ""
+                        for i,v in enumerate(LOCATIONS):
+                            if v in result:
+                                waypoint = LOCATION_WAYPOINTS[i]
+                                args[1] = v
                                 break
-                
-                print(obj, waypoint)
-                if obj == "" or waypoint == "":
-                    self.speak_client(choice(TRY_AGAIN_MESSAGES))
+                        for k, v in OBJECTS.items():
+                            for o in v:
+                                if o in result:
+                                    obj = k
+                                    args[0] = o
+                                    break
                     
-                else:
+                    print(obj, waypoint)
+                    if obj == "" or waypoint == "":
+                        self.speak_client(choice(TRY_AGAIN_MESSAGES))
+                        
+                    else:
+                        command = "fetch"
+                        break
+
+                if attempts == 0:
                     command = "fetch"
+                    args = ["soup can", "reading room"]
+                    obj = "tomato_soup_can"
+                    waypoint = "reading_close"
+                    print("USING MANUAL INPUT")
+
+                self.speak_client(f"Alright, would you like me to get the {args[0]} from the {args[1]}?")
+                res = self.listen_client().result
+                if not ("no" in res.lower()):
                     break
-
-            self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
-
+                
             # Go to location of object
-            self.waypoint_client(waypoint)
+            #self.waypoint_client(waypoint)
+
+            exit()
             
 
             
