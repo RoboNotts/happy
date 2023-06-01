@@ -174,7 +174,7 @@ class Mozart:
                     waypoint = "reading_close"
                     print("USING MANUAL INPUT")
 
-                self.speak_client(f"Alright, would you like me to get the {args[0]} from the {args[1]}?")
+                self.speak_client(f"Alright, would you like me to get the {obj} from the {waypoint}?")
                 res = self.listen_client().result
                 if not ("no" in res.lower()):
                     break
