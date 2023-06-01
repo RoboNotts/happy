@@ -83,7 +83,7 @@ class Mozart:
         if self.state == "INIT":
 
             #Start
-            #self.speak_client("Hello! I'm happy, Let's help some people!")
+            self.speak_client("Hello! I'm happy, Let's help some people!")
             
             
             # Find person
@@ -91,14 +91,18 @@ class Mozart:
             # Go to person
 
             #self.waypoint_client("living_room")
-            #self.speak_client("I'm looking for you!")
+            
+            self.speak_client("I'm looking for you!")
 
             
 
             # Talk to person
             self.speak_client("Hello, how can I help you today? Please speak clearly")
 
-            while True:
+            attempts = 3
+
+            while attempts > 0:
+                attempts -= 1
                 waypoint = ""
                 obj = ""
                 args = ["",""]
@@ -145,10 +149,19 @@ class Mozart:
                     command = "fetch"
                     break
 
+            if attempts == 0:
+                command = "fetch"
+                args = ["soup can", "reading room"]
+                obj = "tomato_soup_can"
+                waypoint = "reading_close"
+                print("USING MANULA INPUT")
+
             self.speak_client(f"Alright I will {command} the {args[0]} from the {args[1]}")
 
             # Go to location of object
             self.waypoint_client(waypoint)
+
+            exit()
             
 
             
