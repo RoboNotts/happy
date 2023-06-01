@@ -152,8 +152,8 @@ class Mozart:
                         for k, v in OBJECTS.items():
                             for o in v:
                                 if o in result:
-                                    obj = k
-                                    args[0] = o
+                                    obj = o
+                                    args[0] = k
                                     break
                     
                     print(obj, waypoint)
