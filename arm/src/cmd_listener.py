@@ -40,6 +40,7 @@ class CommandHandler(object):
 
 		self.movement.poised()
 		sleep(20)
+		self.movement.open()
 		self.movement.poised2()
 		sleep(20)
 		self.movement.open()
