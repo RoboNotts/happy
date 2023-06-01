@@ -48,6 +48,8 @@ class CommandHandler(object):
 		sleep(15)
 		self.movement.close()
 		sleep(5)
+		self.movement.lift()
+		sleep(10)
 		return GraspResponse(True)
 
 	def process_point(self, msg):
