@@ -37,6 +37,11 @@ class CommandHandler(object):
 		point.y = msg.y
 		point.z = msg.z
 		
+
+		self.movement.poised()
+		sleep(20)
+		self.movement.poised2()
+		sleep(20)
 		self.movement.open()
 		sleep(5)
 		self.movement.move_to_point(msg)
