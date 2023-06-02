@@ -11,7 +11,7 @@ from tf.transformations import euler_from_quaternion
 LOCATIONS = [
     "reading room",
     "living room",
-    "dining table",
+    "dining room",
     "hall"
 ]
 
@@ -124,7 +124,7 @@ class Mozart:
                 attempts = 3
 
                 while attempts > 0:
-                    attempts -= 1
+                    
                     waypoint = ""
                     obj = ""
                     args = ["",""]
@@ -145,6 +145,7 @@ class Mozart:
                             print(f"a:{args}")
                             waypoint = LOCATION_WAYPOINTS[LOCATIONS.index(args[1])]
                             obj = OBJECTS[args[0]][0]
+                            args = obj
                         else:
                             raise ValueError
 
@@ -166,10 +167,12 @@ class Mozart:
                     print(obj, waypoint)
                     if obj == "" or waypoint == "":
                         self.speak_client(choice(TRY_AGAIN_MESSAGES))
+                        attempts -= 1
                         
                     else:
                         command = "fetch"
                         break
+                    
 
                 if attempts == 0:
                     command = "fetch"
@@ -262,13 +265,10 @@ class Mozart:
             return response
         except rospy.ServiceException as e:
             print(f"Service Call Failed: {e}")
-
-    def main(*args, **kwargs):
-        rospy.init_node('mozart')
-        m = Mozart()
-        rospy.spin()
         
+
 if __name__ == "__main__":
+    rospy.init_node("mozart")
     m = Mozart()
     r = rospy.Rate(5)
     m.act()
