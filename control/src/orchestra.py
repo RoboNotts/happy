@@ -1,3 +1,5 @@
+#ICRA entry main control node
+
 import rospy
 from bocelli.srv import Request, Listen, Speak, ListenResponse, SpeakResponse, RequestResponse
 from drake.msg import DrakeResults, DrakeResult
