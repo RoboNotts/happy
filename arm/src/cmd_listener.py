@@ -27,7 +27,7 @@ class CommandHandler(object):
 		rospy.Subscriber("/arm/command/cartesian", Point, self.process_point)
 		# rospy.Subscriber("/arm/command/pick", Point, self.process_pick)
 		self.grasp_service = rospy.Service('/arm/command/grasp', Grasp, self.process_grasp)
-		self.pose_service = rospy.Service('/arm/command/grasp', SimplePose, self.process_point)
+		self.pose_service = rospy.Service('/arm/command/simplePose', SimplePose, self.process_point)
 
 		rospy.spin()
 
@@ -61,7 +61,6 @@ class CommandHandler(object):
 		ly = 180
 		lz = 0
 		
-
 		self.movement.move_to_pose(msg.x, msg.y, msg.z,lx,ly,lz,0)
 
 	def process_command(self, msg):
