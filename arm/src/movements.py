@@ -129,12 +129,13 @@ class Movement(object):
 		gripper_joint = self.robot.get_joint(self.gripper_joint_name)
 		gripper_joint.move(position)
 
-	def move_to_pose(self, pose_goal):
+	def move_to_pose2(self, pose_goal):
 		pose = self.arm.get_current_pose()
 		rospy.loginfo("Actual cartesian pose is : ")
 		rospy.loginfo(pose.pose)
 
 		rospy.loginfo(f"received data {pose_goal}")
+
 		# pose_goal = Pose()
 		# pose_goal.orientation.x = x
 		# pose_goal.orientation.y = y

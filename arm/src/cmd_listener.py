@@ -5,7 +5,7 @@ import rospy
 # from predefined_poses import *
 from std_msgs.msg import String, Bool
 from geometry_msgs.msg import Pose, Point
-from arm.srv import Grasp, GraspResponse
+from arm.srv import Grasp, GraspResponse, SimplePose, SimplePoseResponse 
 
 # from catroyale_mgt.msg import CommandTask, CatLocation, Task
 from moveit_msgs.msg import MoveGroupActionFeedback
@@ -26,7 +26,8 @@ class CommandHandler(object):
 		rospy.Subscriber("/arm/command/position", String, self.process_command)
 		rospy.Subscriber("/arm/command/cartesian", Point, self.process_point)
 		# rospy.Subscriber("/arm/command/pick", Point, self.process_pick)
-		self.grasp_service = rospy.Service('/arm/command/grasp', Grasp, self.process_grasp),
+		self.grasp_service = rospy.Service('/arm/command/grasp', Grasp, self.process_grasp)
+		self.pose_service = rospy.Service('/arm/command/grasp', SimplePose, self.process_point)
 
 		rospy.spin()
 
@@ -54,8 +55,14 @@ class CommandHandler(object):
 		return GraspResponse(True)
 
 	def process_point(self, msg):
-		rospy.loginfo(msg)
-		self.movement.move_to_point(msg)
+		
+		#if msg.effectorP == "Flat":
+		lx = -90
+		ly = 180
+		lz = 0
+		
+
+		self.movement.move_to_pose(msg.x, msg.y, msg.z,lx,ly,lz,0)
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
