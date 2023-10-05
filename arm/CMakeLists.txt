@@ -60,6 +60,7 @@ add_service_files(
    DIRECTORY srv
    FILES
    Grasp.srv
+   SimplePose.srv
 #   Service1.srv
 #   Service2.srv
 )
