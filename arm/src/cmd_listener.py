@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
+import numpy as np
 # from feather_pointer import *
 # from predefined_poses import *
 from std_msgs.msg import String, Bool
@@ -54,14 +55,21 @@ class CommandHandler(object):
 		sleep(10)
 		return GraspResponse(True)
 
+	def euler_to_quarternion(r,p,y):
+		qx = np.sin(r/2) * np.cos(p/2) * np.cos(y/2) - np.cos(r/2) * np.sin(p/2) * np.sin(y/2)
+		qy = np.cos(r/2) * np.sin(p/2) * np.cos(y/2) + np.sin(r/2) * np.cos(p/2) * np.sin(y/2)
+		qz = np.cos(r/2) * np.cos(p/2) * np.sin(y/2) - np.sin(r/2) * np.sin(p/2) * np.cos(y/2)
+		qw = np.cos(r/2) * np.cos(p/2) * np.cos(y/2) + np.sin(r/2) * np.sin(p/2) * np.sin(y/2)
+		
+		return [qx,qy,qz,qw]
+		
 	def process_point(self, msg):
-		
 		#if msg.effectorP == "Flat":
-		lx = -90
-		ly = 180
-		lz = 0
+		lx = np.radians(-90)
+		ly = np.radians(180)
+		lz = np.radians(0)
 		
-		self.movement.move_to_pose(msg.x, msg.y, msg.z,lx,ly,lz,0)
+		self.movement.move_to_pose(msg.x, msg.y, msg.z,*self.euler_to_quarternion(lx, ly, lz))
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
