@@ -84,6 +84,9 @@ class Movement(object):
 	# 	# self.grip = moveit_commander.MoveGroupCommander(gripper_group_name, ns=rospy.get_namespace())
 
 	def move_to_pose(self, lx, ly, lz, x, y, z, w):
+		print("==== CURRENT POSE")
+		print(self.arm.get_current_pose().pose)
+		
 		pose_goal = Pose()
 		# pose_goal.orientation.x = x
 		# pose_goal.orientation.y = y
