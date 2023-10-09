@@ -153,10 +153,9 @@ class Movement(object):
 		actual_pose = pose_stamped.pose
 		rospy.loginfo("Actual cartesian pose is : ")
 		rospy.loginfo(actual_pose)
-
 		rospy.loginfo(f"received point {point}")
 		
-		actual_pose.position = point
+		actual_pose.position.x, actual_pose.position.y, actual_pose.position.z = point
 		
 		result = self.move_handler.request_movement(actual_pose)
 		return result
