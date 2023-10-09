@@ -66,7 +66,7 @@ class CommandHandler(object):
 		
 	def process_point(self, msg):
 		#if msg.effectorP == "Flat":
-		lx = -math.pi / 3
+		lx = -math.pi / 2
 		ly = math.pi
 		lz = 0
 		
@@ -104,4 +104,4 @@ class CommandHandler(object):
 if __name__ == '__main__':
 	cmd_handler = CommandHandler()
 
-	# cmd_handler.get_current_pose()
+	#cmd_handler.get_current_pose()
