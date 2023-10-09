@@ -2,6 +2,7 @@
 
 import rospy
 import numpy as np
+import math
 # from feather_pointer import *
 # from predefined_poses import *
 from std_msgs.msg import String, Bool
@@ -65,11 +66,11 @@ class CommandHandler(object):
 		
 	def process_point(self, msg):
 		#if msg.effectorP == "Flat":
-		lx = np.radians(-90)
-		ly = np.radians(180)
-		lz = np.radians(0)
+		lx = -math.pi / 3
+		ly = math.pi
+		lz = 0
 		
-		self.movement.move_to_pose(msg.x, msg.y, msg.z,*self.euler_to_quarternion(lx, ly, lz))
+		self.movement.move_to_pose(msg.x, msg.y, msg.z,*(self.euler_to_quarternion(lx, ly, lz)))
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
