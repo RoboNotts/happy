@@ -72,14 +72,11 @@ class CommandHandler(object):
 		return self.euler_to_quarternion(lx, ly, lz)
 
 	def process_point(self, msg):
-		#if msg.effectorP == "Flat":
-		# lx = -math.pi / 2
-		# ly = math.pi
-		# lz = 0
-		
-		# qx, qy, qz, qw = self.euler_to_quarternion(lx, ly, lz)
+		x = msg.x
+		y = msg.y
+		z = msg.z
 
-		return self.movement.move_to_pose(msg.x, msg.y, msg.z, 0, 0, 0, 1)
+		return self.movement.move_point_diff(x,y,z)
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)

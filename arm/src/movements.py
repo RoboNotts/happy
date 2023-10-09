@@ -83,6 +83,26 @@ class Movement(object):
 	# 	self.scene = moveit_commander.PlanningSceneInterface(ns=rospy.get_namespace())
 	# 	self.arm = moveit_commander.MoveGroupCommander(arm_group_name, ns=rospy.get_namespace())
 	# 	# self.grip = moveit_commander.MoveGroupCommander(gripper_group_name, ns=rospy.get_namespace())
+	
+	# Moves arm by a specified delta for each position
+	# Keeps orientation the same
+	def move_point_diff(self, dx, dy, dz):
+		print("==== CURRENT POSE")
+		current_pose = self.arm.get_current_pose().pose
+		print(current_pose)
+
+		pose_goal = current_pose
+		pose_goal.position.x += dx
+		pose_goal.position.y += dy
+		pose_goal.position.z += dz
+
+		self.arm.set_pose_target(pose_goal)
+		succ = self.arm.go(wait=True)
+		self.arm.stop()
+		self.arm.clear_pose_targets()
+
+		return succ
+	
 
 	def move_to_pose(self, lx, ly, lz, x, y, z, w):
 		print("==== CURRENT POSE")
@@ -90,16 +110,13 @@ class Movement(object):
 		print(current_pose)
 		
 		pose_goal = current_pose
-		# pose_goal.orientation.x = x
-		# pose_goal.orientation.y = y
-		# pose_goal.orientation.z = z
-		# pose_goal.orientation.w = w
-		# pose_goal.position.x = lx
-		# pose_goal.position.y = ly
-		# pose_goal.position.z = lz
-		pose_goal.position.x = 0.5
-		pose_goal.position.y = 0.3
-		pose_goal.position.x = 0.4
+		pose_goal.orientation.x = x
+		pose_goal.orientation.y = y
+		pose_goal.orientation.z = z
+		pose_goal.orientation.w = w
+		pose_goal.position.x = lx
+		pose_goal.position.y = ly
+		pose_goal.position.z = lz
 		
 		self.arm.set_pose_target(pose_goal)
 		succ = self.arm.go(wait=True)
