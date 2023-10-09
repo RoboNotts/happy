@@ -47,6 +47,11 @@ class Movement(object):
 		self.move_handler = MoveHandler(self.arm)
 		self.grip_handler = MoveHandler(self.gripper)
 		
+		print("==== PRINTING ROBOT STATE")
+		print(self.robot.get_current_state())
+		print("")
+
+
 		moveit_commander.roscpp_initialize(sys.argv)
 
 		try:
@@ -80,16 +85,25 @@ class Movement(object):
 
 	def move_to_pose(self, lx, ly, lz, x, y, z, w):
 		pose_goal = Pose()
-		pose_goal.orientation.x = x
-		pose_goal.orientation.y = y
-		pose_goal.orientation.z = z
-		pose_goal.orientation.w = w
-		pose_goal.position.x = lx
-		pose_goal.position.y = ly
-		pose_goal.position.z = lz
+		# pose_goal.orientation.x = x
+		# pose_goal.orientation.y = y
+		# pose_goal.orientation.z = z
+		# pose_goal.orientation.w = w
+		# pose_goal.position.x = lx
+		# pose_goal.position.y = ly
+		# pose_goal.position.z = lz
+		pose_goal.position.x = 0.5
+		pose_goal.position.y = 0.3
+		pose_goal.position.x = 0.4
+		pose_goal.orientation.w = 1
+		
 
-		result = self.move_handler.request_movement(pose_goal)
-		return result
+		self.arm.set_pose_target(pose_goal)
+		succ = self.arm.go(wait=True)
+		self.arm.stop()
+		self.arm.clear_pose_targets()
+
+		return succ
 	
 	def poised(self):
 		joint_positions = [1.4392047436441193, -0.1685397474823187, 2.4947236079827784, -1.7980481236691022, 1.096844999186182, 1.6095996491417872]

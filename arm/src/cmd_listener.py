@@ -79,8 +79,7 @@ class CommandHandler(object):
 		
 		# qx, qy, qz, qw = self.euler_to_quarternion(lx, ly, lz)
 
-		# self.movement.move_to_pose(msg.x, msg.y, msg.z, qx, qy, qz, qw)
-		self.movement.move_to_point((msg.x, msg.y, msg.z))
+		self.movement.move_to_pose(msg.x, msg.y, msg.z, 0, 0, 0, 1)
 
 	def process_command(self, msg):
 		rospy.loginfo(msg.data)
