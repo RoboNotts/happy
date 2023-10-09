@@ -21,7 +21,7 @@ class WorldConfig(object):
          'dims': (base_d, base_w, base_h)
       }) 
 
-      camera_pole_d, camera_pole_w, camera_pole_h = 0.20, 0.16, 0.60
+      camera_pole_d, camera_pole_w, camera_pole_h = 0.20, 0.20, 0.60
       self.world_objects.append({
          'target': False,
          'name':"camera", 
