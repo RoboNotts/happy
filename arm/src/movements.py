@@ -16,6 +16,7 @@ from utils import MoveHandler
 import math
 import numpy as np
 import time
+import copy
 
 
 class Movement(object):
@@ -85,9 +86,10 @@ class Movement(object):
 
 	def move_to_pose(self, lx, ly, lz, x, y, z, w):
 		print("==== CURRENT POSE")
-		print(self.arm.get_current_pose().pose)
+		current_pose = self.arm.get_current_pose().pose
+		print(current_pose)
 		
-		pose_goal = Pose()
+		pose_goal = current_pose
 		# pose_goal.orientation.x = x
 		# pose_goal.orientation.y = y
 		# pose_goal.orientation.z = z
@@ -98,9 +100,7 @@ class Movement(object):
 		pose_goal.position.x = 0.5
 		pose_goal.position.y = 0.3
 		pose_goal.position.x = 0.4
-		pose_goal.orientation.w = 1
 		
-
 		self.arm.set_pose_target(pose_goal)
 		succ = self.arm.go(wait=True)
 		self.arm.stop()
